@@ -20,6 +20,8 @@ class Element:
 
     def render(self, file_out, cur_ind=''):
         file_out.write(cur_ind + '<{}'.format(self.tag))
+        for key, value in self.kwargs.items():
+            file_out.write(' {}="{}"'.format(key, value))
         file_out.write('>\n')
         for item in self.content:
             if isinstance(item, Element):
@@ -57,6 +59,8 @@ class OneLineTag(Element):
 
     def render(self, file_out, cur_ind=''):
         file_out.write(cur_ind + '<{}'.format(self.tag))
+        for key, value in self.kwargs.items():
+            file_out.write(' {}="{}"'.format(key, value))
         file_out.write('>\n')
         for item in self.content:
             if isinstance(item, Element):
@@ -64,6 +68,18 @@ class OneLineTag(Element):
             else:
                 file_out.write(cur_ind + self.indent + item + '\n')
         file_out.write(cur_ind + '</{}>\n'.format(self.tag))
+
+
+class A(OneLineTag):
+    tag = 'a'
+    def __init__(self, link, content):
+        super().__init__(content, href=link)
+
+class H(OneLineTag):
+    def __init__(self, level, content, **kwargs):
+        Element.__init__(self, content, **kwargs)
+        self.level = level
+        self.tag = 'h{}'.format(level)
 
 
 class SelfClosingTag(Element):
@@ -85,6 +101,9 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = 'br'
+
+class Meta(SelfClosingTag):
+    tag = 'meta'
 
 
 class Ul(Element):
