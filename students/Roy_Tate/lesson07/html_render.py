@@ -3,8 +3,9 @@
 ## Student:  Roy Tate (githubtater)
 
 
-
 class Element:
+    '''Takes content (string, a list, etc) and an HTML element, or tag, and renders the html code,
+    with indentation, to a file to be displayed in a browser.'''
     tag = ''
     indent = '    '  # 4 spaces for indentation
 
@@ -35,6 +36,7 @@ class Html(Element):
     tag='html'
 
     def render(self, file_out, cur_ind=''):
+        '''Override Element.render'''
         file_out.write('<!DOCTYPE html>\n')
         Element.render(self, file_out, cur_ind='')
 
@@ -58,6 +60,7 @@ class Head(Element):
 class OneLineTag(Element):
 
     def render(self, file_out, cur_ind=''):
+        '''override Element.render to generate the correct tags for <br>, etc.'''
         file_out.write(cur_ind + '<{}'.format(self.tag))
         for key, value in self.kwargs.items():
             file_out.write(' {}="{}"'.format(key, value))

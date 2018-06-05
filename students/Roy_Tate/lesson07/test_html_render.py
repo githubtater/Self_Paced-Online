@@ -12,11 +12,13 @@ class TestHTMLRender(unittest.TestCase):
     item_two = 'This is item number 2'
 
     def test_verify_element_class_attributes(self):
+        '''Verify that the basic class attributes can be accessed'''
         element_attr = hr.Element()
         self.assertEqual(element_attr.tag, '')
         self.assertEqual(element_attr.indent, '    ')
 
     def test_element_class_renders_content(self):
+        '''Verify items can be appended to an element'''
         item_one = 'This is item number 1'
         element = hr.Element()
         element.append(self.item_one)
@@ -32,6 +34,7 @@ class TestHTMLRender(unittest.TestCase):
         self.assertEqual(output.getvalue(), '<title>\nTest Title Test\n</title>\n')
 
     def test_html_class(self):
+        '''Verify the Html.render function overrides Element.render'''
         new_html = hr.Html()
         self.assertEqual(new_html.tag, 'html')
         output = StringIO()
@@ -59,6 +62,7 @@ class TestHTMLRender(unittest.TestCase):
         self.assertEqual(output.getvalue(), '<h1>\nHead1\n</h1>\n')
 
     def test_self_closing_tag(self):
+        '''Verify SelfClosingTag.render overrides Element.render'''
         sc_tag = hr.SelfClosingTag()
         sc_tag.tag = 'br'
         output = StringIO()
