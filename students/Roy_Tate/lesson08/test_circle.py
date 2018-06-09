@@ -3,7 +3,6 @@
 import unittest
 import circle
 import math
-from io import StringIO
 
 
 class CircleTest(unittest.TestCase):
@@ -24,6 +23,7 @@ class CircleTest(unittest.TestCase):
         c = circle.Circle(10)
         self.assertEqual(c.radius, c.diameter / 2)
         c.diameter = 50
+        self.assertEqual(c.diameter, c.radius * 2)
         self.assertEqual(c.radius, c.diameter / 2)
 
     def test_area_of_circle_calculated_properly(self):
@@ -40,7 +40,58 @@ class CircleTest(unittest.TestCase):
     def test_repr_output(self):
         pass
 
+    def test_add_circles(self):
+        c1 = circle.Circle(10)
+        c2 = circle.Circle(12)
+        c3 = c1 + c2
+        self.assertEqual(c3.radius, (c1.radius + c2.radius))
 
+    def test_multiply_circles(self):
+        multiplier = 3
+        c1 = circle.Circle(10)
+        c2 = c1 * multiplier
+        # c3 = multiplier * c1
+        self.assertEqual(c2.radius, c1.radius*multiplier)
+
+    def test_lt_(self):
+        c1 = circle.Circle(10)
+        c2 = circle.Circle(20)
+        self.assertLess(c1.radius, c2.radius)
+
+    def test_le_(self):
+        c1 = circle.Circle(10)
+        c2 = circle.Circle(20)
+        self.assertLess(c1.radius, c2.radius)
+        c1 *= 2
+        self.assertLessEqual(c1.radius, c2.radius)
+
+    def test_gt_(self):
+        c1 = circle.Circle(10)
+        c2 = circle.Circle(20)
+        self.assertGreater(c2.radius, c1.radius)
+
+    def test_eq__(self):
+        c1 = circle.Circle(10)
+        c2 = circle.Circle(10)
+        self.assertEqual(c1.radius, c2.radius)
+
+    def test_ge_(self):
+        c1 = circle.Circle(10)
+        c2 = circle.Circle(20)
+        self.assertGreaterEqual(c2.radius, c1.radius)
+
+    def test_ne_(self):
+        c1 = circle.Circle(10)
+        c2 = circle.Circle(20)
+        self.assertNotEqual(c1.radius, c2.radius)
+
+    def test_circle_sort(self):
+        a = circle.Circle(10)
+        b = circle.Circle(22)
+        c = circle.Circle(15)
+        circles = [a, b, c]
+        circles.sort(key=circle.Circle.sort_key)
+        self.assertEqual(circles, [a, c, b])
 
 if __name__ == "__main__":
     unittest.main()

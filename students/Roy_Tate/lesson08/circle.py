@@ -35,27 +35,50 @@ class Circle:
     def __repr__(self):
         return 'Circle({})'.format(self.radius)
 
+    def __add__(self, other):
+        new_radius = self._radius
+        new_radius += other.radius
+        return Circle(new_radius)
 
-a = Circle(2)
-print('Radius: ' + str(a.radius))
-print('Diameter: ' + str(a.diameter))
-print('Area:  ' + str(a.area))
-a.diameter = 50
-print('Radius: ' + str(a.radius))
-print('Diameter: ' + str(a.diameter))
-print('Area:  ' + str(a.area))
-d = Circle.from_diameter(10)
-print(d.diameter)
-d.diameter = 5
-print(d.radius)
-print(d)
-print(repr(d))
-dd = eval(repr(d))
-print(dd)
-# b = Circle(12)
-# print('Radius: ' + str(b.radius))
-# print('Diameter: ' + str(b.diameter))
-# print('Area:  ' + str(b.area))
+    def __mul__(self, other):
+        new_radius = self._radius
+        if isinstance(other, int):
+            new_radius *= other
+        elif isinstance(other, Circle):
+            new_radius *= other.radius
+        else:
+            raise TypeError('Cannot multiply circle by {} because {} is not supported.'.format(other, type(other)))
+        return Circle(new_radius)
 
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
+    def __lt__(self, other):
+        return self.radius < other.radius
+
+    def __le__(self, other):
+        return self.radius <= other.radius
+
+    def __gt__(self, other):
+        return self.radius > other.radius
+
+    def __eq__(self, other):
+        return self.radius == other.radius
+
+    def __ge__(self, other):
+        return self.radius >= other.radius
+
+    def __ne__(self, other):
+        return self.radius != other.radius
+
+    def sort_key(self):
+        return self._radius
+
+a = Circle(10)
+b = Circle(22)
+c = Circle(15)
+# circles = [a, b, c]
+# circles.sort(key=Circle.sort_key)
+# print(circles)
 
 
