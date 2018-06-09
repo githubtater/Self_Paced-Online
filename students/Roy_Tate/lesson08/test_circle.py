@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+
+## Student/Author:  Roy Tate (githubtater)
 
 
 import unittest
@@ -12,7 +15,7 @@ class CircleTest(unittest.TestCase):
 
     def test_radius_returns_correct_value(self):
         c = circle.Circle(self.radius)
-        assert c.radius == self.radius
+        self.assertEqual(c.radius, self.radius)
 
     def test_diameter_calculates_properly(self):
         c = circle.Circle(self.radius)
@@ -34,11 +37,6 @@ class CircleTest(unittest.TestCase):
         c = circle.Circle.from_diameter(10)
         self.assertEqual(c.diameter, 10)
 
-    def test_string_output(self):
-        pass
-
-    def test_repr_output(self):
-        pass
 
     def test_add_circles(self):
         c1 = circle.Circle(10)
