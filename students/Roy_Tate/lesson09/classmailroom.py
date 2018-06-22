@@ -2,7 +2,7 @@
 
 ## Author/student:  Roy Tate (githubtater)
 
-from collections import defaultdict
+import os
 
 class Donor:
 
@@ -51,58 +51,89 @@ class Donor:
         return len(self.donations)
 
     @property
+    def max_donation(self):
+        return sum(self.donations)
+
+    @property
     def letter(self):
         text = '''\n
-                From:    A Charity Thankful For Your Kindness
-                To:      {0}
-                Subject:  This Year's Challenge!
+From:    A Charity Thankful For Your Kindness
+To:      {0}
+Subject:  This Year's Challenge!
 
-                Dear {0},
+Dear {0},
 
-                First, we would like to thank you for your continued generosity throughout the 
-                years. Without contributions like yours, the good things that we are able to do 
-                simply would not be possible. 
+First, we would like to thank you for your continued generosity throughout the 
+years. Without contributions like yours, the good things that we are able to do 
+simply would not be possible. 
 
-                Your contributions to date have totaled ${1:.2f}. 
-                
-                This years challenge is to see if you can donate more than your current total
-                in one year. This would effectively double your current donations to the 
-                organization!  Remember, it is for a good cause!
+Your contributions to date have totaled ${1:.2f}. 
 
-                Sincerely,
+This years challenge is to see if you can donate more than your current total
+in one year. This would effectively double your current donations to the 
+organization!  Remember, it is for a good cause!
 
-                The good guys at the best organization'''
+Sincerely,
+
+The good guys at the best organization'''
 
         return text.format(self.name, sum(self.donations))
 
-donor = Donor('roy tate',100)
-donor.add_donation(2637)
-donor.add_donation(2234)
-donor.add_donation(18822353)
-print(donor)
-print(donor.letter)
 
 
-class DonorCollection:
+class DonorCollection():
 
     def __init__(self):
         self.donors = {}
 
+
     def __repr__(self):
         return 'DonorCollection()'
 
-    @property
     def print_all(self):
-        format_str = '{:<20}{:<20}{:<20}'
-        header = format_str.format('Donor Name', 'Donations(sum)', '# of Donations')
-        for donor in self.donors:
-            header += format_str.format(donor.name, sum(donor.donations), len(donor.donations))
+        for donor in sorted(self.donors):
+            print(donor)
 
-        return header
+    def add(self, name, amount):
+        name = name.title()
+        if name in self.donors:
+            self.donors[name].add(amount)
+        else:
+            self.donors[name] = Donor(name, amount)
 
-    @property
-    def generate_email_file(self):
-        pass
+
+    def create_report(self):
+        format_str = '{:<20}{:<15}{:^13}{:<20}'
+        report = (format_str+'\n').format('Name', 'Total Given', '# of Gifts', 'Avg. Gift')
+        for v in self.donors.values():
+            print(v)
+            donor_values = (v.name, '$' + str(v.total_donations), v.num_gifts, '$' + str(v.average))
+            report += (format_str + '\n').format(*donor_values)
+        return report
+
+    def save_emails(self, directory='.'):
+        cwd = os.getcwd()
+        if not directory:
+            directory = cwd
+        try:
+            os.mkdir(directory)
+        except FileExistsError:
+            pass
+        finally:
+            os.chdir(directory)
+            directory = os.getcwd()
+            emails = {k + '.txt': v.letter for k, v in self.donors.items()}
+            for filename, text in emails.items():
+                with open(filename, 'w+') as f:
+                    f.write(str(text))
+            return directory
+
 
 
 dc = DonorCollection()
+dc.add('Bobby Jones', 232)
+dc.add('Willie Wonka', 78979)
+dc.add('Fred Hammerman', 8477.232)
+print(dc.create_report())
+# dc.print_all()
+dc.save_emails()
