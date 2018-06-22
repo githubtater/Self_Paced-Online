@@ -75,7 +75,8 @@ organization!  Remember, it is for a good cause!
 
 Sincerely,
 
-The good guys at the best organization'''
+The good guys at the best organization
+'''
 
         return text.format(self.name, sum(self.donations))
 
@@ -86,32 +87,33 @@ class DonorCollection():
     def __init__(self):
         self.donors = {}
 
-
     def __repr__(self):
         return 'DonorCollection()'
 
     def print_all(self):
+        print('\n{:-^20}'.format('Donor List'))
         for donor in sorted(self.donors):
             print(donor)
+        print('\n')
 
     def add(self, name, amount):
         name = name.title()
         if name in self.donors:
-            self.donors[name].add(amount)
+            self.donors[name].add_donation(amount)
         else:
             self.donors[name] = Donor(name, amount)
 
 
     def create_report(self):
         format_str = '{:<20}{:<15}{:^13}{:<20}'
-        report = (format_str+'\n').format('Name', 'Total Given', '# of Gifts', 'Avg. Gift')
+        report = '\n{:-^58}\n'.format('DONATION REPORT')
+        report += (format_str+'\n').format('Name', 'Total Given', '# of Gifts', 'Avg. Gift')
         for v in self.donors.values():
-            print(v)
             donor_values = (v.name, '$' + str(v.total_donations), v.num_gifts, '$' + str(v.average))
             report += (format_str + '\n').format(*donor_values)
-        return report
+        print(report)
 
-    def save_emails(self, directory='.'):
+    def save_emails(self, directory=''):
         cwd = os.getcwd()
         if not directory:
             directory = cwd
@@ -128,12 +130,3 @@ class DonorCollection():
                     f.write(str(text))
             return directory
 
-
-
-dc = DonorCollection()
-dc.add('Bobby Jones', 232)
-dc.add('Willie Wonka', 78979)
-dc.add('Fred Hammerman', 8477.232)
-print(dc.create_report())
-# dc.print_all()
-dc.save_emails()
