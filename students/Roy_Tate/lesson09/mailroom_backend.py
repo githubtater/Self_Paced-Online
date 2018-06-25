@@ -40,11 +40,11 @@ class Donor:
 
     @property
     def total_donations(self):
-        return sum(self.donations)
+        return round(sum(self.donations), 2)
 
     @property
     def average(self):
-        return self.total_donations / self.num_gifts
+        return round(self.total_donations / self.num_gifts, 2)
 
     @property
     def num_gifts(self):
@@ -52,7 +52,7 @@ class Donor:
 
     @property
     def max_donation(self):
-        return sum(self.donations)
+        return max(self.donations)
 
     @property
     def letter(self):
@@ -111,7 +111,7 @@ class DonorCollection():
         for v in self.donors.values():
             donor_values = (v.name, '$' + str(v.total_donations), v.num_gifts, '$' + str(v.average))
             report += (format_str + '\n').format(*donor_values)
-        print(report)
+        return report
 
     def save_emails(self, directory=''):
         cwd = os.getcwd()

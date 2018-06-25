@@ -55,7 +55,8 @@ class MailroomUI:
         self.menu_selection(thank_you_args, response)
 
     def print_report(self):
-        self.collection.create_report()
+        report = self.collection.create_report()
+        print(report)
 
     def email_all(self):
         save_directory = input('\nEnter the directory to save to:  ')
@@ -74,6 +75,11 @@ class MailroomUI:
         donor_name = input('\nEnter the donor name (First Last): \n')
         donation_amount = float(input('\nEnter the donation amount: \n'))
         self.collection.add(donor_name, donation_amount)
+        for k, v in self.collection.donors.items():
+            if k == donor_name.strip():
+                print(v.letter)
+
+
 
     def print_list(self):
         self.collection.print_all()
@@ -84,9 +90,11 @@ if __name__=="__main__":
 
     # Populate the donor database
     collection.add('Bobby Jones', 232)
+    collection.add('Bobby Jones', 1439)
     collection.add('Willie Wonka', 78979)
     collection.add('Fred Hammerman', 8477.232)
     collection.add('Fred Hammerman', 100343)
+    collection.add('Fred Hammerman', 2563)
     ui = MailroomUI(collection)
 
     ui.main_menu()
