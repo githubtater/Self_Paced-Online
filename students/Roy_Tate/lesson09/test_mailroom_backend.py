@@ -9,6 +9,9 @@ import os, os.path
 
 class TestMailroomBackend(unittest.TestCase):
 
+    additional_donation_amount = 12099909
+    initial_sum_for_Barney = 8053047
+
     def setUp(self):
         self.collection = mb.DonorCollection()
         self.collection.add('Fred Flintstone', 999)
@@ -18,7 +21,6 @@ class TestMailroomBackend(unittest.TestCase):
         self.collection.add('Barney Rubble' , 287100)
         self.collection.add('Barney Rubble' , 2323)
         self.collection.add('Barney Rubble' , 7673324)
-
 
     def test_donor_collection_instance_created(self):
         assert isinstance(self.collection, mb.DonorCollection)
@@ -53,7 +55,7 @@ class TestMailroomBackend(unittest.TestCase):
 
     def test_total_donations_returned(self):
         total_donations = self.collection.donors['Barney Rubble'].total_donations
-        self.assertEqual(total_donations, 8053047)
+        self.assertEqual(total_donations, self.initial_sum_for_Barney)
 
     def test_num_gifts_returned(self):
         num_gifts = self.collection.donors['Barney Rubble'].num_gifts
@@ -61,7 +63,10 @@ class TestMailroomBackend(unittest.TestCase):
 
 
     def test_donations_are_added(self):
-        self.collection
+        self.collection.add('Barney Rubble', self.additional_donation_amount)
+        self.assertEqual(self.collection.donors['Barney Rubble'].total_donations, self.additional_donation_amount +
+                         self.initial_sum_for_Barney)
+
 
 
 if __name__=="__main__":

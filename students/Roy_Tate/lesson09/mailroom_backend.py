@@ -4,6 +4,7 @@
 
 import os
 
+
 class Donor:
 
     donor_dict = {}
@@ -27,7 +28,6 @@ class Donor:
         elif isinstance(other, Donor):
             new_donation += other.amount
         return Donor(new_donation)
-
 
     def __str__(self):
         return 'Donor name: {}  Donations: {}'.format(self.name, sum(self.donations))
@@ -102,7 +102,6 @@ class DonorCollection():
             self.donors[name].add_donation(amount)
         else:
             self.donors[name] = Donor(name, amount)
-
 
     def create_report(self):
         format_str = '{:<20}{:<15}{:^13}{:<20}'
